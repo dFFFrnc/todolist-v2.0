@@ -6,8 +6,19 @@ const mongoose = require("mongoose");
 
 const _ = require("lodash");
 
+require("dotenv").config();
+mongoose.set('strictQuery', false);
 
 const app = express();
+
+
+
+
+const PORT = process.env.PORT || 3000
+
+app.set('view engine', 'ejs');
+mongoose.set('strictQuery', true);
+
 
 app.set('view engine', 'ejs');
 
@@ -16,13 +27,19 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static("public"));
 
-// mongoose.connect("mongodb://0.0.0.0:27017/todoListDB1", {
-//   useNewUrlParser: true
-// });
+const connectDB = async () => {
+  try {
+    mongoose.connect("mongodb+srv://IvanServer:12801280@cluster0.nerrton.mongodb.net/todoListDB1?retryWrites=true&w=majority", {
+      useNewUrlParser: true
+    });
+    console.log(`MongoDB Connected`);
+  } catch (error) {
+    console.log("NEW ERROR "+ error);
+    process.exit(1);
+  }
+}
 
-mongoose.connect("mongodb+srv://IvanServer:12801280@cluster0.nerrton.mongodb.net/todoListDB1?retryWrites=true&w=majority", {
-  useNewUrlParser: true
-});
+
 
 
 
@@ -185,6 +202,13 @@ app.get("/:customListName", function(req, res) {
 app.get("/about", function(req, res) {
   res.render("about");
 });
+
+//Connect to the database before listening
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log("listening for requests");
+    })
+})
 
 app.listen(3000, function() {
   console.log("Server started on port 3000");

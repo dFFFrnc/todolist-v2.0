@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const _ = require("lodash");
 
 require("dotenv").config();
+console.log(process.env)
 mongoose.set('strictQuery', false);
 
 const app = express();
@@ -29,7 +30,7 @@ app.use(express.static("public"));
 
 const connectDB = async () => {
   try {
-    mongoose.connect("mongodb+srv://IvanServer:12801280@cluster0.nerrton.mongodb.net/todoListDB1?retryWrites=true&w=majority", {
+    mongoose.connect("mongodb+srv://"+process.env.ADMIN_NAME +":"+process.env.ADMIN_PASS+"@cluster0.nerrton.mongodb.net/todoListDB1?retryWrites=true&w=majority", {
       useNewUrlParser: true
     });
     console.log(`MongoDB Connected`);

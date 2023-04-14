@@ -204,13 +204,10 @@ app.get("/about", function(req, res) {
   res.render("about");
 });
 
-//Connect to the database before listening
-connectDB().then(() => {
-    app.listen(PORT, () => {
-        console.log("listening for requests");
-    })
-})
 
-app.listen(3000, function() {
-  console.log("Server started on port 3000");
+  // Connect to the database before listening
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log("server started on port 3000");
+  });
 });
